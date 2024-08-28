@@ -1,22 +1,10 @@
-#include <algorithm>
 #include <numeric>
 #include <cctype>
-#include <cstddef>
-#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <string_view>
 #include <vector>
-
-int64_t totalSum = {};
-
-int64_t parseLine(std::string_view line);
-
-auto is_num = [](char c) -> bool { 
-	return std::isdigit(c); 
-};
 
 int main(){
 	std::ifstream puzzle_input;
@@ -37,7 +25,7 @@ int main(){
 			std::vector<char> foundDigits;
 			std::cout << "Current Line: " << currLine << "\n";
 			for (auto const i : currLine) {
-				if (is_num(i)){
+				if (std::isdigit(i)){
 					foundDigits.push_back(i);
 				}
 			}
@@ -56,5 +44,6 @@ int main(){
 	}
 		auto finalSum = std::accumulate(parsedNumbers.begin(), parsedNumbers.end(), 0);
 		std::cout << "FINAL SUM: " << finalSum << "\n";
-		std::exit(EXIT_SUCCESS);
+		return 0;
 }
+
