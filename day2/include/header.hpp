@@ -89,6 +89,6 @@ uint32_t partTwo(Game& game){
 	}
 
 	int power =  red*green*blue;
-	std::cerr << "power:" << power << "\n";
+	//std::cerr << "power:" << power << "\n";
 	return power;
 }

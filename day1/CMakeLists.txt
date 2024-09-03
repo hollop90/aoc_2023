@@ -1,10 +1,5 @@
-cmake_minimum_required(VERSION 3.15)
-
-project(aoc)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_GENERATOR Ninja)
-
 add_executable(one.out src/one.cpp)
 add_executable(two.out src/two.cpp)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/input.txt
+	DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

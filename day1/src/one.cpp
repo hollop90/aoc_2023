@@ -1,3 +1,6 @@
+#include <ostream>
+#include <unistd.h>
+#include <filesystem>
 #include <numeric>
 #include <cctype>
 #include <cstdlib>
@@ -6,12 +9,15 @@
 #include <string>
 #include <vector>
 
-int main(){
+int main(int argc, char** argv){
 	std::ifstream puzzle_input;
 	std::string currLine;
 	std::vector<int> parsedNumbers;
 
-	puzzle_input.open("input.txt");
+	namespace fs = std::filesystem;
+	fs::path binDir = fs::canonical(argv[0]).parent_path();
+
+	puzzle_input.open(binDir.append("input.txt"));
 
 	if (!puzzle_input.is_open()) {
 		std::cerr << "Failed to open file\n";

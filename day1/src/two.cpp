@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <algorithm>
 #include <array>
 #include <numeric>
@@ -24,12 +25,15 @@ std::array<std::pair<std::string, int>, 9> words = {
 	    std::make_pair("nine", 9)
     };
 
-int main(){
+int main(int argc, char** argv){
 	std::string currLine;
 	std::vector<int> parsedNumbers;
 	std::vector<std::string::iterator> parsedWordsIter;
 
-	std::ifstream puzzle_input("input.txt");
+	namespace fs = std::filesystem;
+	fs::path binDir = fs::canonical(argv[0]).parent_path();
+
+	std::ifstream puzzle_input(binDir.append("input.txt"));
 
 	if (!puzzle_input.is_open()) {
 		std::cerr << "Failed to open file\n";
