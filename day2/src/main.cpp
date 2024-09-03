@@ -1,14 +1,18 @@
+#include <cstdint>
 #include <iostream>
+#include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <numeric>
+#include <unordered_map>
 
 #include "../include/header.hpp"
 
-int main(int charc, char** argv){
+int main(){
 	std::ifstream in("input.txt");
 	std::string currLine;
-	std::vector<int> possibleGameIDs;
+	// std::vector<int> possibleGameIDs;
+		static uint32_t sum = 0;
 
 	if (!in.is_open()) {
 		std::cerr << "Error: Failed to open file\n";
@@ -21,18 +25,19 @@ int main(int charc, char** argv){
 		}
 		Game currGame;
 		parseGame(currLine, currGame);
-		setGamePossibility(currGame);
 
-		if (currGame.isPossible) {
-			possibleGameIDs.push_back(currGame.gameId);	
-		}
+		sum += partTwo(currGame);
+		
+		// setGamePossibility(currGame);
 
-		std::cout << "Possible game IDs:\n";
-		for (const auto& elem : possibleGameIDs) {
-			std::cout << elem << "\n";
-		}
-		std::cout << "ANSWER:" << std::accumulate(possibleGameIDs.begin(), possibleGameIDs.end(), 0) << "\n";
+		// if (currGame.isPossible) {
+		// 	possibleGameIDs.push_back(currGame.gameId);	
+		// }
+
 	}
+
+	//std::cout << "ANSWER:" << std::accumulate(possibleGameIDs.begin(), possibleGameIDs.end(), 0) << "\n";
+	std::cout << "ans:" << sum << std::endl;
 
 	return EXIT_SUCCESS;
 }
