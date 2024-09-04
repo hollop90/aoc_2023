@@ -11,12 +11,11 @@
 
 int main(int argc, char** argv){
 	std::vector<int> validPartNums;
-	namespace fs = std::filesystem;
-	fs::path path = fs::path(argv[0]).parent_path().append("input.txt");
-	std::fstream in(path);
+	std::filesystem::path path = std::filesystem::path(argv[0]).parent_path().append("input.txt");
+	std::ifstream in(path);
 
 	if (!in.is_open()) {
-		//std::cerr << "Failed to open file: " << path << "\n";
+		std::cerr << "Failed to open file: " << path << "\n";
 		return EXIT_FAILURE;
 	}
 
@@ -28,15 +27,13 @@ int main(int argc, char** argv){
 			break;
 		}
 		a.push_back(line);
-		//std::cerr << line << "\n";
 	}
 
-	for (size_t i = 0; i < a.size(); i++) {
-		//std::cerr << a.at(i) << "\n";
-		for (size_t lineIdx = 0; lineIdx < a.at(i).length(); lineIdx++) {
-			if (std::isdigit(a.at(i).at(lineIdx))) {
+	for (size_t rowIdx = 0; rowIdx < a.size(); rowIdx++) {
+		for (size_t charIdx = 0; charIdx < a.at(rowIdx).length(); charIdx++) {
+			if (std::isdigit(a.at(rowIdx).at(charIdx))) {
 				// It's ugly, it's inefficient, but it works and that's all that matters for now
-				int partNum = std::atoi(a.at(i).substr(lineIdx, std::string::npos).c_str());	
+				int partNum = std::atoi(a.at(rowIdx).substr(charIdx, std::string::npos).c_str());	
 
 				std::stringstream ss;
 				ss << partNum;
@@ -45,77 +42,66 @@ int main(int argc, char** argv){
 				ss >> s;
 				int partNumLen = s.length();
 
-				//std::cerr << "num:" << s << "\n";
-				//std::cerr << "len:" << partNumLen << "\n";
-				//std::cerr << "\n";
-
-				const size_t begin = (lineIdx-1) == SIZE_MAX ? 0 : lineIdx-1;
-				const size_t end = (lineIdx+partNumLen) > a.size()-1 ? a.size()-1 : lineIdx+partNumLen;
+				const size_t begin = (charIdx-1) == SIZE_MAX ? 0 : charIdx-1;
+				const size_t end = (charIdx+partNumLen) > a.size()-1 ? a.size()-1 : charIdx+partNumLen;
 
 				bool found = false;
 
 				// above
-				if ((i-1) != SIZE_MAX) {
+				if ((rowIdx-1) != SIZE_MAX) {
 					for (size_t symIdx = begin; symIdx < end+1; symIdx++) {
-						if (a.at(i-1).at(symIdx) != '.' && !std::isdigit(a.at(i-1).at(symIdx))) {
-							//std::cerr << "VALID\n";
+						if (a.at(rowIdx-1).at(symIdx) != '.' && !std::isdigit(a.at(rowIdx-1).at(symIdx))) {
 							found = true;
 							validPartNums.push_back(partNum);	
 							break;
 						}	
 					}
 					if (found) {
-						lineIdx += partNumLen;
+						charIdx += partNumLen;
 						continue;
 					}
 				}
 
 				// inline
-				if (a.at(i).at(begin) != '.' && !std::isdigit(a.at(i).at(begin))) {
-					//std::cerr << "VALID\n";
-							found = true;
+				if (a.at(rowIdx).at(begin) != '.' && !std::isdigit(a.at(rowIdx).at(begin))) {
+					found = true;
 					validPartNums.push_back(partNum);	
 				}	
 				if (found) {
-					lineIdx += partNumLen;
+					charIdx += partNumLen;
 					continue;
 				}
 
-				if (a.at(i).at(end) != '.' && !std::isdigit(a.at(i).at(end))) {
-					//std::cerr << "VALID\n";
-							found = true;
+				if (a.at(rowIdx).at(end) != '.' && !std::isdigit(a.at(rowIdx).at(end))) {
+					found = true;
 					validPartNums.push_back(partNum);	
 				}	
 				if (found) {
-					lineIdx += partNumLen;
+					charIdx += partNumLen;
 					continue;
 				}
 
 				// below
-				if ((i+1) < a.at(i).size()) {
+				if ((rowIdx+1) < a.at(rowIdx).size()) {
 					for (size_t symIdx = begin; symIdx < end+1; symIdx++) {
-						if (a.at(i+1).at(symIdx) != '.' && !std::isdigit(a.at(i+1).at(symIdx))) {
-							//std::cerr << "VALID\n";
+						if (a.at(rowIdx+1).at(symIdx) != '.' && !std::isdigit(a.at(rowIdx+1).at(symIdx))) {
 							found = true;
 							validPartNums.push_back(partNum);	
 							break;
 						}	
 					}
 					if (found) {
-						lineIdx += partNumLen;
+						charIdx += partNumLen;
 						continue;
 					}
 				}
-				lineIdx += partNumLen;
+				charIdx += partNumLen;
 			}
 		}
 	}
-	//std::cerr << "total nums:" << validPartNums.size() << "\n";
-	for (const auto& elem : validPartNums) {
-		//std::cerr << "validnum:" << elem << "\n";
+	for (auto elem : validPartNums) {
+		std::cout << elem << "\n";	
 	}
-	int sum = std::accumulate(validPartNums.begin(), validPartNums.end(), 0);
-
-	std::cout << "ans:" << sum << "\n";
+	std::cout << "ans:" << std::accumulate(validPartNums.begin(), validPartNums.end(), 0) << "\n";
 }
 
