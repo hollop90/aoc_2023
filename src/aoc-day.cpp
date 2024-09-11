@@ -1,8 +1,9 @@
 #include "../include/aoc-day.hpp"
 #include <chrono>
 #include <stdexcept>
+#include <iostream>
 
-Day::Day(int dayNum, std::string (*p1)(std::stringstream),std::string (*p2)(std::stringstream))
+Day::Day(int dayNum, std::string (*p1)(std::ifstream&),std::string (*p2)(std::ifstream&))
 		: m_dayNum{dayNum}
 		, m_part1{p1}
 		, m_part2{p2}
@@ -16,34 +17,26 @@ Day::Day(int dayNum, std::string (*p1)(std::stringstream),std::string (*p2)(std:
 }
 
 void Day::run_day(){
-	std::chrono::time_point<std::chrono::high_resolution_clock> begin;
-	std::chrono::time_point<std::chrono::high_resolution_clock> end;
-
-
-	begin = std::chrono::high_resolution_clock::now();
 	run_part(1);
-	end = std::chrono::high_resolution_clock::now();
-	m_time1 = end - begin;
-
-	begin = std::chrono::high_resolution_clock::now();
 	run_part(2);
-	end = std::chrono::high_resolution_clock::now();
-	m_time2 = end - begin;
 }
 
 void Day::run_part(int part){
+	m_input.seekg(0);
+	m_input.clear();
+
 	std::chrono::time_point<std::chrono::high_resolution_clock> begin;
 	std::chrono::time_point<std::chrono::high_resolution_clock> end;
 
-	begin = std::chrono::high_resolution_clock::now();
-
 	switch (part) {
 		case 1:
+			begin = std::chrono::high_resolution_clock::now();
 			m_ans1 = (*m_part1)(m_input);
 			end = std::chrono::high_resolution_clock::now();
 			m_time1 = end - begin;
 			break;
 		case 2:
+			begin = std::chrono::high_resolution_clock::now();
 			m_ans2 = (*m_part2)(m_input);
 			end = std::chrono::high_resolution_clock::now();
 			m_time2 = end - begin;
@@ -66,11 +59,17 @@ std::string Day::get_ans_part(int part){
 			return m_ans2;
 			break;
 		default:
+			return "";
 			break;
 	}
 }
 
-void Day::set_part_func(std::string (*func)(std::ifstream&), int part){
+void Day::set_func(std::string (*func1)(std::ifstream&), std::string (*func2)(std::ifstream&)){
+	m_part1 = func1;
+	m_part2 = func2;
+}
+
+void Day::set_func_part(std::string (*func)(std::ifstream&), int part){
 	switch (part) {
 		case 1:
 			m_part1 = func;
@@ -96,6 +95,11 @@ std::chrono::duration<float> Day::get_time_part(int part){
 			return m_time2;
 			break;
 		default:
+			return std::chrono::duration<float>(0);
 			break;
 	}
+}
+
+Day::~Day(){
+	m_input.close();
 }

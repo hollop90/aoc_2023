@@ -3,8 +3,10 @@
 
 #include <chrono>
 #include <fstream>
-#include <sstream>
 #include <string>
+
+void aocday();
+
 class Day{
 private:
 	std::ifstream m_input;
@@ -21,14 +23,19 @@ public:
 	Day(int dayNum, std::string (*p1)(std::ifstream&), std::string (*p2)(std::ifstream&));
 	~Day();
 
+	// Run both or only one part
 	void run_day();
 	void run_part(int part);
 
+	// Get both or only one ans
 	std::pair<std::string, std::string> get_ans();
 	std::string get_ans_part(int part);
 
-	void set_part_func(std::string (*func)(std::ifstream&), int part);
+	// Set both or one func pointer
+	void set_func(std::string (*func1)(std::ifstream&), std::string (*func2)(std::ifstream&));
+	void set_func_part(std::string (*func)(std::ifstream&), int part);
 
+	// Get one or both run times
 	std::pair<std::chrono::duration<float>, std::chrono::duration<float>> get_times();
 	std::chrono::duration<float> get_time_part(int part);
 };
