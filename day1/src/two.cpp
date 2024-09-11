@@ -10,20 +10,21 @@
 #include <utility>
 #include <vector>
 
-std::pair<std::size_t, int> findFirstWord(std::string_view line);
-std::pair<std::size_t, int> findLastWord(std::string_view line);
+std::pair<std::int64_t, int> findFirstWord(std::string_view line);
+std::pair<std::int64_t, int> findLastWord(std::string_view line);
 
-std::array<std::pair<std::string, int>, 9> words = {
-	    std::make_pair("one", 1),
-	    std::make_pair("two", 2),
-	    std::make_pair("three", 3),
-	    std::make_pair("four", 4),
-	    std::make_pair("five", 5),
-	    std::make_pair("six", 6),
-	    std::make_pair("seven", 7),
-	    std::make_pair("eight", 8),
-	    std::make_pair("nine", 9)
-    };
+// Note the "{{...}}" needed for this kind of initialization
+std::array<std::pair<std::string, int>, 9> words = {{
+	{"one", 1},
+	{"two", 2},
+	{"three", 3},
+	{"four", 4},
+	{"five", 5},
+	{"six", 6},
+	{"seven", 7},
+	{"eight", 8},
+	{"nine", 9}
+}};
 
 int main(int argc, char** argv){
 	std::string currLine;
@@ -85,8 +86,8 @@ int main(int argc, char** argv){
 		return 0;
 }
 
-std::pair<std::size_t, int> findFirstWord(const std::string_view line){
-	std::pair<std::size_t, int> firstWord{std::distance(line.begin(), line.end()), 0};
+std::pair<std::int64_t, int> findFirstWord(const std::string_view line){
+	std::pair<std::int64_t, int> firstWord{std::distance(line.begin(), line.end()), 0};
 	for (const auto& elem : words) {
 		auto currIter = std::search(line.begin(), line.end(), elem.first.begin(), elem.first.end());
 		if (std::distance(line.begin(), currIter) < firstWord.first) {
@@ -97,8 +98,8 @@ std::pair<std::size_t, int> findFirstWord(const std::string_view line){
 	return firstWord;
 }
 
-std::pair<std::size_t, int> findLastWord(std::string_view line){
-	std::pair<std::size_t, int> firstWord{std::distance(line.rbegin(), line.rend()), 0};
+std::pair<std::int64_t, int> findLastWord(std::string_view line){
+	std::pair<std::int64_t, int> firstWord{std::distance(line.rbegin(), line.rend()), 0};
 	for (const auto& elem : words) {
 		auto currIter = std::search(line.rbegin(), line.rend(), elem.first.rbegin(), elem.first.rend());
 		if (std::distance(line.rbegin(), currIter) < firstWord.first) {
