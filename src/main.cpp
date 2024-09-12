@@ -81,12 +81,16 @@ int main(int argc, char** argv){
 	if (all_flg) {
 		for (const auto& elem : d) {
 			elem->run_part(1);
-			std::cout << "Day" << elem->get_day_id() << " Ans " << elem->get_ans_part(1) << "\n";
+			elem->run_part(2);
+			std::cout << "Day" << elem->get_day_id() << " 1 " << " Ans " << elem->get_ans_part(1) << "\n";
+			std::cout << "Day" << elem->get_day_id() << " 2 " << " Ans " << elem->get_ans_part(2) << "\n";
 		}
 	}
 	else {
 		d.at(day_id)->run_part(1);
-		std::cout << "Day" << d.at(day_id)->get_day_id() << " Ans " << d.at(day_id)->get_ans_part(1) << "\n";
+		d.at(day_id)->run_part(2);
+		std::cout << "Day" << d.at(day_id)->get_day_id() << " 1 " << " Ans " << d.at(day_id)->get_ans_part(1) << "\n";
+		std::cout << "Day" << d.at(day_id)->get_day_id() << " 2 " << " Ans " << d.at(day_id)->get_ans_part(2) << "\n";
 	}
 
 	return EXIT_SUCCESS;
