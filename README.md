@@ -12,6 +12,12 @@
 
 #### Day 3
 
+config i.e. path to inpiuts
+
+- env var
+- specify with path arg
+- ~/.config/<dirname>
+
 aoc-23
 	runs all
 	or maybe just print help
