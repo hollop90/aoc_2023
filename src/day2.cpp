@@ -1,5 +1,4 @@
 #include "../include/day2.hpp"
-#include <iostream>
 #include <numeric>
 
 namespace day2 {
@@ -75,7 +74,6 @@ namespace day2 {
 		return power;
 	}
 
-
 	std::string part1(std::ifstream& input){
 		std::string currLine;
 		std::vector<int> possibleGameIDs;
@@ -93,12 +91,8 @@ namespace day2 {
 			if (currGame.isPossible) {
 				possibleGameIDs.push_back(currGame.gameId);	
 			}
-	
 		}
-		sum = std::accumulate(possibleGameIDs.begin(), possibleGameIDs.end(), 0);
-		std::cout << "ans:" << sum << std::endl;
-	
-		return std::to_string(sum);
+		return std::to_string(std::accumulate(possibleGameIDs.begin(), possibleGameIDs.end(), 0));
 	}
 
 	std::string part2(std::ifstream& input){
