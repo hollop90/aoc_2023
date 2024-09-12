@@ -2,13 +2,16 @@
 #define UGO_AOC_2023
 
 #include <chrono>
+#include <filesystem>
 #include <fstream>
 #include <string>
 
-void aocday();
-
 class Day{
 private:
+	// static member variables and functions
+	// https://www.learncpp.com/cpp-tutorial/static-member-variables/
+	static inline std::filesystem::path m_binPath;
+
 	std::ifstream m_input;
 	int m_dayNum;
 	std::string m_ans1 {};
@@ -22,6 +25,10 @@ public:
 	Day() = delete;
 	Day(int dayNum, std::string (*p1)(std::ifstream&), std::string (*p2)(std::ifstream&));
 	~Day();
+
+	int get_day_id();
+
+	static void set_bin_path(std::filesystem::path path);
 
 	// Run both or only one part
 	void run_day();

@@ -1,5 +1,6 @@
 #include "../include/aoc-day.hpp"
 #include <chrono>
+#include <filesystem>
 #include <stdexcept>
 #include <iostream>
 
@@ -8,12 +9,11 @@ Day::Day(int dayNum, std::string (*p1)(std::ifstream&),std::string (*p2)(std::if
 		, m_part1{p1}
 		, m_part2{p2}
 {
-	std::string path = "input/day" + std::to_string(m_dayNum);
-	m_input.open(path);
-	if (!m_input.is_open()) {
-		// contructs a file in place (I think) ew
-		throw std::runtime_error("Could not open file: " + path);
-	}
+}
+
+void Day::set_bin_path(std::filesystem::path path){
+	m_binPath = std::filesystem::canonical(path);
+	//std::cout << m_binPath << "\n";
 }
 
 void Day::run_day(){
@@ -21,7 +21,20 @@ void Day::run_day(){
 	run_part(2);
 }
 
+int Day::get_day_id(){
+	return m_dayNum;
+}
+
 void Day::run_part(int part){
+	if (!m_input.is_open()) {
+		std::filesystem::path path = m_binPath / ("day" + std::to_string(m_dayNum) + ".txt");
+		m_input.open(path);
+		if(!m_input.is_open()){
+			// contructs a file in place (I think) ew
+			throw std::runtime_error("Could not open file: " + path.string());
+		}
+	}
+
 	m_input.seekg(0);
 	m_input.clear();
 
