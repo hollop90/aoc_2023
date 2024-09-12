@@ -30,7 +30,7 @@ int main(int argc, char** argv){
 		//std::cout << "optarg: " << opt  << " " << static_cast<char>(opt) << " " << optarg << "\n";
 		switch (opt) {
 			case 'f':
-				if(!std::filesystem::exists(optarg)){
+				if(!std::filesystem::exists(std::filesystem::current_path().append(optarg))){
 					std::cout << "FILE " << std::quoted(optarg) << " does not exist\n";
 					return EXIT_FAILURE;
 				}
