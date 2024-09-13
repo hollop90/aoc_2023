@@ -1,5 +1,6 @@
 #include "../include/day2.hpp"
 #include <numeric>
+#include <iostream>
 
 namespace day2 {
 	auto isNumeber = [](unsigned char c) {
@@ -35,7 +36,7 @@ namespace day2 {
 	}
 	
 	void parseGame(std::string_view line, Game& game){
-		int red, green, blue;
+		int red = 0, green = 0, blue = 0;
 		size_t colonIdx = line.find(":");
 	
 		game.gameId = std::atoi(line.substr(NUMBER_IDX, colonIdx - NUMBER_IDX).data());
@@ -77,7 +78,6 @@ namespace day2 {
 	std::string part1(std::ifstream& input){
 		std::string currLine;
 		std::vector<int> possibleGameIDs;
-		static uint32_t sum = 0;
 	
 		while (std::getline(input, currLine)){
 			if(currLine.empty()){
@@ -97,7 +97,7 @@ namespace day2 {
 
 	std::string part2(std::ifstream& input){
 		std::string currLine;
-		static uint32_t sum = 0;
+		uint32_t sum = 0;
 	
 		while (std::getline(input, currLine)){
 			if(currLine.empty()){

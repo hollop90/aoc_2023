@@ -54,7 +54,7 @@ void setGamePossibility(Game& game){
 }
 
 void parseGame(std::string_view line, Game& game){
-	int red, green, blue;
+	int red = 0, green = 0, blue = 0;
 	size_t colonIdx = line.find(":");
 
 	game.gameId = std::atoi(line.substr(NUMBER_IDX, colonIdx - NUMBER_IDX).data());
