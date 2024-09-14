@@ -17,33 +17,31 @@ namespace day3 {
 		const int64_t numLines = vec.size();
 		const int64_t lineLen = vec.front().size();
 
+		std::string_view check_line = vec.at(line+dir);
+		std::vector<int> ret;
+
 		const int64_t begin = (col - 1) < 0 ? 0 : (col- 1);
 		const int64_t end = (col + 1) == lineLen ? (col) : (col+ 1);
 
-		std::vector<int> nums;
 
 		if (line+dir < numLines && line+dir >= 0) {
 			for (int64_t i = begin; i < end + 1; i++) {
-				if (std::isdigit(vec.at(line+dir).at(i))) {
+				if (std::isdigit(check_line.at(i))) {
 					int64_t j = i;
-					while (std::isdigit(vec.at(line+dir).at(j))) {
+					while (std::isdigit(check_line.at(j))) {
 						--j;
 						if (j < 0) {
 							break;
 						}
 					}
-					bool consecutive = false;
-					if (i != begin && std::isdigit(vec.at(line+dir).at(i-1))) {
-						consecutive = true;
-					}
-					if (!consecutive) {
-						nums.push_back(std::atoi(vec.at(line+dir).substr(j+1).c_str()));
+					if (!(i != begin && std::isdigit(check_line.at(i-1)))) {
+						ret.push_back(std::atoi(check_line.substr(j+1).data()));
 					}
 				}
 			}
-			return nums;
+			return ret;
 		}
-		return nums;
+		return ret;
 	}
 
 	// ... any number adjacent to a symbol, even diagonally,
@@ -67,13 +65,7 @@ namespace day3 {
 				if (std::isdigit(a.at(i).at(lineIdx))) {
 					// It's ugly, it's inefficient, but it works and that's all that matters for now
 					int partNum = std::atoi(a.at(i).substr(lineIdx, std::string::npos).c_str());	
-
-					std::stringstream ss;
-					ss << partNum;
-
-					std::string s;
-					ss >> s;
-					int partNumLen = s.length();
+					int partNumLen = std::to_string(partNum).length();
 
 					const size_t begin = (lineIdx-1) == SIZE_MAX ? 0 : lineIdx-1;
 					const size_t end = (lineIdx+partNumLen) > a.size()-1 ? a.size()-1 : lineIdx+partNumLen;
@@ -97,7 +89,7 @@ namespace day3 {
 
 					// inline
 					if (a.at(i).at(begin) != '.' && !std::isdigit(a.at(i).at(begin))) {
-								found = true;
+						found = true;
 						validPartNums.push_back(partNum);	
 					}	
 					if (found) {
@@ -106,7 +98,7 @@ namespace day3 {
 					}
 
 					if (a.at(i).at(end) != '.' && !std::isdigit(a.at(i).at(end))) {
-								found = true;
+						found = true;
 						validPartNums.push_back(partNum);	
 					}	
 					if (found) {
@@ -132,12 +124,7 @@ namespace day3 {
 				}
 			}
 		}
-		// for (const auto& elem : validPartNums) {
-		// 	std::clog << "valid num: " << elem << "\n";
-		// }
-		int sum = std::accumulate(validPartNums.begin(), validPartNums.end(), 0);
-
-		return std::to_string(sum);
+		return std::to_string(std::accumulate(validPartNums.begin(), validPartNums.end(), 0));
 	}
 
 	// A gear is any * symbol that is adjacent to exactly two part numbers.
