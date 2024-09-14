@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cstddef>
 #include <iostream>
 #include <argp.h>
 #include <vector>
@@ -76,6 +77,8 @@ int main(int argc, char** argv){
 		}
 	}
 
+	namespace sc = std::chrono;
+
 	std::vector<Day*> d;
 
 	d.push_back(&day1::day);
@@ -88,14 +91,28 @@ int main(int argc, char** argv){
 			elem->run_part(1);
 			elem->run_part(2);
 			std::cout << "Day" << elem->get_day_id() << " 1 " << " Ans " << elem->get_ans_part(1) << "\n";
+			std::cout << "Day" << elem->get_day_id() << " 1 " << " Tim " << sc::duration_cast<std::chrono::microseconds>(elem->get_time_part(1)) << "\n";
+			std::cout << "-----\n";
 			std::cout << "Day" << elem->get_day_id() << " 2 " << " Ans " << elem->get_ans_part(2) << "\n";
+			std::cout << "Day" << elem->get_day_id() << " 2 " << " Tim " << sc::duration_cast<std::chrono::microseconds>(elem->get_time_part(2)) << "\n";
+			std::cout << "=====\n";
 		}
 	}
 	else {
+		// sc::duration<float> dur; 
+		// for (size_t i = 0; i < 10000; i++) {
+		// 	d.at(day_id)->run_part(1);
+		// 	dur += d.at(day_id)->get_time_part(1);
+		// }
+		// std::cout << "avg time: " << sc::duration_cast<sc::microseconds>((dur/10000)) << "\n";
 		d.at(day_id)->run_part(1);
 		d.at(day_id)->run_part(2);
 		std::cout << "Day" << d.at(day_id)->get_day_id() << " 1 " << " Ans " << d.at(day_id)->get_ans_part(1) << "\n";
+		std::cout << "Day" << d.at(day_id)->get_day_id() << " 1 " << " Tim " << sc::duration_cast<std::chrono::microseconds>(d.at(day_id)->get_time_part(1)) << "\n";
+		std::cout << "-----\n";
 		std::cout << "Day" << d.at(day_id)->get_day_id() << " 2 " << " Ans " << d.at(day_id)->get_ans_part(2) << "\n";
+		std::cout << "Day" << d.at(day_id)->get_day_id() << " 2 " << " Tim " << sc::duration_cast<std::chrono::microseconds>(d.at(day_id)->get_time_part(2)) << "\n";
+		std::cout << "=====\n";
 	}
 
 	return EXIT_SUCCESS;

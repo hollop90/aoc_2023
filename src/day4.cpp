@@ -13,6 +13,7 @@ namespace day4 {
 	const size_t COLON_IDX = 8;
 	std::string part1(std::ifstream& input){
 		std::vector<std::string> cards;
+		cards.reserve(199);
 		std::vector<int64_t> cardsPoints;
 
 		{
@@ -27,8 +28,13 @@ namespace day4 {
 		const int64_t numCards = cards.size();
 		const int64_t cardLen = cards.front().size();
 
+		std::vector<int> winningNums;
+		winningNums.reserve(10);
+
+		std::vector<int> potentialNums;
+		potentialNums.reserve(25);
 		for (int64_t cardsRow = 0; cardsRow < numCards; cardsRow++) {
-			std::vector<int> winningNums;
+			winningNums.clear();
 			std::stringstream winSS(cards.at(cardsRow).substr(COLON_IDX+1, SEPARATOR_IDX-(COLON_IDX+2)));
 			{
 				int out;
@@ -40,13 +46,13 @@ namespace day4 {
 					out = -1;
 				}
 			}
-			std::cout << "Card num " << cardsRow+1 << " winning numbers" << ":\n";
+			//std::clog << "Card num " << cardsRow+1 << " winning numbers" << ":\n";
 			for (const auto& i : winningNums) {
-				std::cout << i << "\n";
+				//std::clog << i << "\n";
 			}
-			std::cout << "\n";
+			//std::clog << "\n";
 
-			std::vector<int> potentialNums;
+			potentialNums.clear();
 			std::stringstream potSS(cards.at(cardsRow).substr(SEPARATOR_IDX+2));
 			{
 				int out;
@@ -58,18 +64,18 @@ namespace day4 {
 					out = -1;
 				}
 			}
-			std::cout << "Card num " << cardsRow+1 << " potential numbers" << ":\n";
+			//std::clog << "Card num " << cardsRow+1 << " potential numbers" << ":\n";
 			for (const auto& i : potentialNums) {
-				std::cout << i << "\n";
+				//std::clog << i << "\n";
 			}
-			std::cout << "\n";
+			//std::clog << "\n";
 
 			int totalFound = 0;
 			int points = 1;
 			for (const auto i : potentialNums) {
 				if (std::find(winningNums.begin(), winningNums.end(), i) != winningNums.end()) {
 					totalFound++;
-					std::cout << "found " << i << "\n";
+					//std::clog << "found " << i << "\n";
 					if (totalFound > 1) {
 						points *= 2;
 					}
@@ -81,9 +87,9 @@ namespace day4 {
 			else {
 				points = 0;
 			}
-			std::cout << "Card num " << cardsRow+1 << " total points" << ":\n";
-			std::cout << points << "\n";
-			std::cout << "\n";
+			//std::clog << "Card num " << cardsRow+1 << " total points" << ":\n";
+			//std::clog << points << "\n";
+			//std::clog << "\n";
 		}
 
 		return std::to_string(std::accumulate(cardsPoints.begin(), cardsPoints.end(), 0));
