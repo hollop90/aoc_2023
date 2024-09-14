@@ -35,8 +35,8 @@ void Day::run_part(int part){
 		}
 	}
 
-	m_input.seekg(0);
 	m_input.clear();
+	m_input.seekg(0);
 
 	std::chrono::time_point<std::chrono::high_resolution_clock> begin;
 	std::chrono::time_point<std::chrono::high_resolution_clock> end;
