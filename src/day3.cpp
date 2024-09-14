@@ -46,6 +46,9 @@ namespace day3 {
 		return nums;
 	}
 
+	// ... any number adjacent to a symbol, even diagonally,
+	// is a "part number" and should be included in your sum.
+	// What is the sum of all of the part numbers in the engine schematic?
 	std::string part1(std::ifstream& in){
 		std::vector<int> validPartNums;
 
@@ -137,6 +140,10 @@ namespace day3 {
 		return std::to_string(sum);
 	}
 
+	// A gear is any * symbol that is adjacent to exactly two part numbers.
+	// Its gear ratio is the result of multiplying those two numbers together.
+	//
+	// What is the sum of all of the gear ratios in your engine schematic?
 	std::string part2(std::ifstream& input){
 		// Store the gear ratios
 		std::vector<int64_t> ans;
@@ -152,14 +159,8 @@ namespace day3 {
 			}
 		}
 
-		// Convenience variables
 		const int64_t linLen = schema.front().size();
 		const int64_t totLines = schema.size();
-
-		//check
-		// for (const auto& i : schema) {
-		// 	std::clog << i << "\n";
-		// }
 
 		// scan each line for a '*'
 		// if found, check around it for numbers (with bounds checking)
@@ -167,126 +168,30 @@ namespace day3 {
 		// count how many numbers are found
 		// if count is > 2 go on to next '*' 
 		// else get product of numbers and save
-		//
 		// repeat
 
-		// Iterate throught lines
 		for (int64_t lineNum = 0; lineNum < totLines; lineNum++) {
-				//std::clog << schema[lineNum][colNum] << "\n";
-			// Iterate through columns
 			for (int64_t colNum = 0; colNum < linLen; colNum++) {
-				//std::clog << schema[lineNum][colNum] << "\n";
-				// Currenct character
 				auto c = schema.at(lineNum).at(colNum);
 
-				// Look around the '*' character
-				//
-				// | => begin
-				// V
-				// ... => above
-				// .*. => inline
-				// ... => below
-				//   ^
-				//   | => end
-				//
-				// A lot of boundry checking and liberal use of '.at()' is at play here
-				// Thanks to how nested the code is and copy paste errors, I spent some
-				// time tracking down "out of range" exceptions. Without '.at()' I would
-				// just be looking at random memory
 				if (c == '*') {
-					const int64_t begin = (colNum - 1) < 0 ? 0 : (colNum - 1);
-					const int64_t end = (colNum + 1) == linLen ? (colNum) : (colNum + 1);
-
 					std::vector<int> nearbyNums;
 
 					// Check ABOVE
-					// if ((lineNum - 1) > 0 ){
-					// 	for (int64_t i = begin; i < end + 1; i++) {
-					// 		if (std::isdigit(schema.at(lineNum-1).at(i))) {
-					// 			int64_t j = i;
-					// 			while (std::isdigit(schema.at(lineNum-1).at(j))) {
-					// 				--j;
-					// 				if (j < 0) {
-					// 					break;
-					// 				}
-					// 			}
-					// 			bool consecutive = false;
-					// 			if (i != begin && std::isdigit(schema.at(lineNum-1).at(i-1))) {
-					// 				consecutive = true;
-					// 			}
-					// 			if (!consecutive) {
-					// 				nearbyNums.push_back(std::atoi(schema.at(lineNum-1).substr(j+1).c_str()));
-					// 			}
-					// 		}
-					// 	}
-					// 	//std::clog << "linenum: " << lineNum << "\n";
-					// }
-					auto above = check_vert(-1, schema, lineNum, colNum);
-					for (const auto& elem : above) {
+					for (const auto& elem : check_vert(-1, schema, lineNum, colNum)) {
 						nearbyNums.push_back(elem);
 					}
 
 					// Check INLINE
-					//std::clog << schema[lineNum][begin] << "\n";
-					// if(std::isdigit(schema.at(lineNum).at(begin))){
-					// 	int64_t j = begin;
-					// 	while (std::isdigit(schema.at(lineNum).at(j))) {
-					// 		--j;
-					// 		if (j < 0) {
-					// 			break;
-					// 		}
-					// 	}
-					// 	nearbyNums.push_back(std::atoi(schema.at(lineNum).substr(j+1).c_str()));
-					// }
-					auto left = check_vert(0, schema, lineNum, colNum);
-					for (const auto& elem : left) {
+					for (const auto& elem : check_vert(0, schema, lineNum, colNum)) {
 						nearbyNums.push_back(elem);
 					}
-					//std::clog << schema[lineNum][end] << "\n";
-					// if(std::isdigit(schema.at(lineNum).at(end))){
-					// 	nearbyNums.push_back(std::atoi(schema.at(lineNum).substr(end).c_str()));
-					// }
-					//auto right = check_vert(0, schema, lineNum, colNum);
-					//for (const auto& elem : right) {
-					//	nearbyNums.push_back(elem);
-					//}
-					//std::clog << "\n";
 
 					// Check BELOW
-					// if ((lineNum + 1) < totLines) {
-					// 	for (int64_t i = begin; i < (end+1); i++) {
-					// 		if (std::isdigit(schema.at(lineNum+1).at(i))) {
-					// 			int64_t j = i;
-					// 			while (std::isdigit(schema.at(lineNum+1).at(j))) {
-					// 				--j;
-					// 				if (j < 0) {
-					// 					break;
-					// 				}
-					// 			}
-					// 			bool consecutive = false;
-					// 			if (i != begin && std::isdigit(schema.at(lineNum+1).at(i-1))) {
-					// 				consecutive = true;
-					// 			}
-					// 			if (!consecutive) {
-					// 				nearbyNums.push_back(std::atoi(schema.at(lineNum+1).substr(j+1).c_str()));
-					// 			}
-					// 		}
-					// 		//std::clog << schema[lineNum+1][i];
-					// 	}
-					// 	//std::clog << "\n";
-					// 	//std::clog << "linenum: " << lineNum << "\n";
-					// }
-					auto below = check_vert(1, schema, lineNum, colNum);
-					for (const auto& elem : below) {
+					for (const auto& elem : check_vert(4, schema, lineNum, colNum)) {
 						nearbyNums.push_back(elem);
 					}
 
-					for (const auto& elem : nearbyNums) {
-						//std::clog << elem << "\n";
-					}
-					//std::clog << "\n";
-					//std::clog << "nearbybums size: " << nearbyNums.size() << "\n";
-					//std::clog << "line number: " << lineNum+1 << "\n";
 					if (nearbyNums.size() == 2) {
 						ans.push_back(nearbyNums.at(0) * nearbyNums.at(1));
 					}
