@@ -9,6 +9,7 @@
 #include "../include/day1.hpp"
 #include "../include/day2.hpp"
 #include "../include/day3.hpp"
+#include "../include/day4.hpp"
 
 int main(int argc, char** argv){
 	// -f !:FILE
@@ -80,6 +81,7 @@ int main(int argc, char** argv){
 	d.push_back(&day1::day);
 	d.push_back(&day2::day);
 	d.push_back(&day3::day);
+	d.push_back(&day4::day);
 
 	if (all_flg) {
 		for (const auto& elem : d) {
