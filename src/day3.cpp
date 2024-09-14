@@ -188,7 +188,7 @@ namespace day3 {
 					}
 
 					// Check BELOW
-					for (const auto& elem : check_vert(4, schema, lineNum, colNum)) {
+					for (const auto& elem : check_vert(1, schema, lineNum, colNum)) {
 						nearbyNums.push_back(elem);
 					}
 
